@@ -1,0 +1,54 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'groovy'
+
+    id("com.github.johnrengelman.shadow")
+    id("io.gitlab.arturbosch.detekt")
+}
+
+group 'org.strcklr'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "Sonatype Snapshots"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+
+    maven {
+        name = "Kotlin Discord"
+        url = uri("https://maven.kotlindiscord.com/repository/maven-public/")
+    }
+}
+
+dependencies {
+    detektPlugins(libs.detekt)
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.codehaus.groovy:groovy-all:3.0.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    implementation "org.slf4j:slf4j-simple:1.6.1"
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kord.extensions)
+
+    // Logging dependencies
+    implementation(libs.groovy)
+    implementation(libs.logback)
+    implementation(libs.logging)
+
+}
+
+java {
+    // Current LTS version of Java
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config = rootProject.files("detekt.yml")
+}
