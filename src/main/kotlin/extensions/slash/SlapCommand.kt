@@ -7,11 +7,11 @@ import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
 import com.kotlindiscord.kord.extensions.types.respond
 
-class SlapCommand: Extension() {
+class SlapCommand : Extension() {
     override val name = "slap"
 
     override suspend fun setup() {
-        publicSlashCommand(::SlapSlashArgs) {  // Public slash commands have public responses
+        publicSlashCommand(::SlapSlashArgs) { // Public slash commands have public responses
             name = "slap"
             description = "Ask the bot to slap another user"
 
@@ -46,4 +46,3 @@ class SlapCommand: Extension() {
         }
     }
 }
-

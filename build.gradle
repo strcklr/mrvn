@@ -49,7 +49,7 @@ java {
 }
 
 detekt {
-    buildUponDefaultConfig = false
+    buildUponDefaultConfig = true
 }
 
 archivesBaseName = 'mrvn'
