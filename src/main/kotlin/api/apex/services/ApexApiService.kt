@@ -3,20 +3,14 @@ package api.apex.services
 import api.apex.models.PlayerStats
 import com.google.gson.Gson
 import com.kotlindiscord.kord.extensions.utils.env
-import dev.kord.common.entity.Snowflake
-import io.ktor.util.*
-import mu.KLogger
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import util.APEX_HOST
 
-val APEX_API_TOKEN = Snowflake(
-    env("APEX_API_KEY")
-)
+val APEX_API_TOKEN = env("APEX_API_KEY")
 
-class ApexApiService() {
+class ApexApiService {
     private val version = "5"
     private val client = OkHttpClient()
 
@@ -31,7 +25,7 @@ class ApexApiService() {
                     .addQueryParameter("player", player)
                     .addQueryParameter("platform", platform)
                     .build())
-                .header("Authorization", "IgCQilX0qfBAnQvxnCg0")
+                .header("Authorization", APEX_API_TOKEN)
                 .method("GET", null)
                 .build()
             ).execute()

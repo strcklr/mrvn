@@ -10,6 +10,7 @@ import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
 import com.kotlindiscord.kord.extensions.types.respond
 
 class ApexPlayerStats: Extension() {
+    private val apexApiService = ApexApiService()
     override val name = "stats"
 
     override suspend fun setup() {
@@ -18,7 +19,7 @@ class ApexPlayerStats: Extension() {
             description = "Retrieve Apex stats for a player"
 
             action {
-                val stats = ApexApiService().getPlayerStats(arguments.player, arguments.platform)
+                val stats = apexApiService.getPlayerStats(arguments.player, arguments.platform)
 
                 respond {
                     content = if (stats?.global?.rank != null) {

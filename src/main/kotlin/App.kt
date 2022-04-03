@@ -9,7 +9,7 @@ val TEST_SERVER_ID = Snowflake(
     env("TEST_SERVER")
 )
 
-val TOKEN = env("TOKEN")
+val TOKEN = env("MRVN_TOKEN")
 
 suspend fun main() {
     val bot = ExtensibleBot(TOKEN) {

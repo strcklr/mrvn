@@ -52,4 +52,4 @@ fun PlayerRank.findRank(): CalculatedRank =
         in DIAMOND_II.value..DIAMOND_I.value -> CalculatedRank(DIAMOND_II, DIAMOND_I)
         in DIAMOND_I.value..MASTER.value -> CalculatedRank(DIAMOND_I, MASTER)
         else -> CalculatedRank(MASTER, APEX_PREDATOR)
-}
+    }

@@ -1,4 +1,5 @@
 plugins {
+    id 'application'
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
     id 'groovy'
 
@@ -25,14 +26,13 @@ repositories {
 dependencies {
     detektPlugins(libs.detekt)
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation 'org.codehaus.groovy:groovy-all:3.0.5'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     implementation "org.slf4j:slf4j-simple:1.6.1"
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation 'com.google.code.gson:gson:2.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10"
 
-    implementation(libs.kotlin.stdlib)
     implementation(libs.kord.extensions)
 
     // Logging dependencies
@@ -49,6 +49,18 @@ java {
 }
 
 detekt {
-    buildUponDefaultConfig = true
-    config = rootProject.files("detekt.yml")
+    buildUponDefaultConfig = false
 }
+
+archivesBaseName = 'mrvn'
+
+// tell the jar which class to startup in.
+jar {
+    manifest {
+        attributes 'Main-Class': 'AppKt'
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+mainClassName = 'AppKt'
