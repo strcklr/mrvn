@@ -42,7 +42,7 @@ class ApexPlayerStats: Extension() {
                                 in 400 until 1000 -> "Long ways to go..."
                                 else -> "You're never gonna get there!"
                             }
-                        } else "$rankAndDivision :clap:! *tryhard*..."
+                        } else "$rankAndDivision :clap:! *tryhard...*"
                         embed {
                             title = ":joystick: ${stats.name}'s Apex Legends stats"
                             description = "$rankUpMessage"
