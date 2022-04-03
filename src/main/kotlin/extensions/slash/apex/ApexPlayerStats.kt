@@ -8,10 +8,14 @@ import com.kotlindiscord.kord.extensions.commands.converters.impl.string
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
 import com.kotlindiscord.kord.extensions.types.respond
+import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.create.embed
+
+private const val PROFILE_URL = "https://apexlegendsstatus.com/profile/uid"
 
 class ApexPlayerStats: Extension() {
-    private val apexApiService = ApexApiService()
     override val name = "stats"
+    private val apexApiService = ApexApiService()
 
     override suspend fun setup() {
         publicSlashCommand(::SlapSlashArgs) {  // Public slash commands have public responses
@@ -19,24 +23,54 @@ class ApexPlayerStats: Extension() {
             description = "Retrieve Apex stats for a player"
 
             action {
-                val stats = apexApiService.getPlayerStats(arguments.player, arguments.platform)
+                val stats = apexApiService.getPlayerStats(arguments.player, arguments.platform)?.global
+                val rank = stats?.rank
 
                 respond {
-                    content = if (stats?.global?.rank != null) {
-                        val rank = stats.global.rank.findRank()
-                        val rpToNextLevel = rank.getRPNeededForLevelUp(stats.global.rank.rankScore)
+                    if (stats != null && rank != null) {
+                        val calculatedRank = rank.findRank()
+                        val rpToNextLevel = calculatedRank.getRPNeededForLevelUp(rank.rankScore)
                         val rankUpMessage = if(rpToNextLevel > 0)  {
-                            val quip = when(rank.getRPNeededForLevelUp(stats.global.rank.rankScore)) {
-                                in 0..150 -> "So close!!"
-                                in 151..400 -> "Getting there!"
-                                in 401..1000 -> "Long ways to go..."
+                            val quip = when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
+                                in 0 until 150 -> "So close!!"
+                                in 150 until 400 -> "Getting there!"
+                                in 400 until 1000 -> "Long ways to go..."
                                 else -> "You're never gonna get there!"
                             }
-                            "They need ${rpToNextLevel}RP for promotion to ${rank.nextRank.name}! $quip"
-                        } else "A true master! Good luck on Apex Predator!"
-                        "${stats.global.name} is in ${stats.global.rank.rankName} ${stats.global.rank.rankDiv} at ${stats.global.rank.rankScore}RP! $rankUpMessage"
+                            " (${rpToNextLevel} RP needed for ${calculatedRank.nextRank.name})! $quip"
+                        } else "Nice!"
+                        embed {
+                            title = "${stats.name}'s Apex Legends stats"
+                            description = "${rank.rankName} ${rank.rankDiv} with ${rank.rankScore} RP$rankUpMessage"
+                            url = "$PROFILE_URL/${arguments.platform}/${stats.uid}"
+                            println(rank.rankImg.replace("\\", ""))
+                            thumbnail {
+                                url = rank.rankImg.replace("\\", "")
+                            }
+                            fields = mutableListOf(
+                                EmbedBuilder.Field().apply {
+                                    inline = true
+                                    name = ":medal: Rank"
+                                    value = "${rank.rankName} ${rank.rankDiv}"
+                                },
+                                EmbedBuilder.Field().apply {
+                                    inline = true
+                                    name = ":100: Current RP"
+                                    value = "${rank.rankScore} RP"
+                                },
+
+                                EmbedBuilder.Field().apply {
+                                    inline = true
+                                    name = ":1234: RP Needed"
+                                    value = "$rpToNextLevel RP"
+                                }
+                            )
+                        }
                     } else {
-                        "Wasn't able to get stats for that user. Bummer :/"
+                        embed {
+                            title = "Player not found"
+                            description = "Wasn't able to get stats for that user. Bummer :/"
+                        }
                     }
                 }
             }
