@@ -29,8 +29,12 @@ class ApexPlayerStats: Extension() {
                 respond {
                     if (stats != null && rank != null) {
                         val calculatedRank = rank.findRank()
-                        val rpToNextLevel = calculatedRank.getRPNeededForLevelUp(rank.rankScore)
-                        val rankAndDivision = if (rank.rankScore >= 10000) "${rank.rankName}" else "${rank.rankName} ${rank.rankDiv}"
+                        var rpToNextLevel = calculatedRank.getRPNeededForLevelUp(rank.rankScore)
+                        var rankAndDivision = "${rank.rankName} ${rank.rankDiv}"
+                        if (rank.rankScore >= 10000) {
+                            rankAndDivision = rank.rankName
+                            rpToNextLevel = 0
+                        }
                         val rankUpMessage = if(rpToNextLevel > 0)  {
                             val quip = when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
                                 in 0 until 150 -> "So close!!"
@@ -39,10 +43,10 @@ class ApexPlayerStats: Extension() {
                                 else -> "You're never gonna get there!"
                             }
                             " (${rpToNextLevel} RP needed for ${calculatedRank.nextRank.name})! $quip"
-                        } else "*tryhard*"
+                        } else " :clap:! *tryhard*..."
                         embed {
                             title = ":joystick: ${stats.name}'s Apex Legends stats"
-                            description = ":mechanical_arm: $rankAndDivision with ${rank.rankScore} RP$rankUpMessage"
+                            description = "$rankAndDivision with ${rank.rankScore} RP$rankUpMessage"
                             url = "$PROFILE_URL/${arguments.platform}/${stats.uid}"
                             thumbnail {
                                 url = rank.rankImg.replace("\\", "")
