@@ -4,7 +4,7 @@ import api.apex.models.MASTER
 import api.apex.models.findRank
 import api.apex.services.ApexApiService
 import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.application.slash.converters.impl.stringChoice
+import com.kotlindiscord.kord.extensions.commands.application.slash.converters.impl.defaultingStringChoice
 import com.kotlindiscord.kord.extensions.commands.converters.impl.string
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
@@ -16,10 +16,10 @@ private const val PROFILE_URL = "https://apexlegendsstatus.com/profile/uid"
 
 class ApexPlayerStats : Extension() {
     override val name = "stats"
-    private val apexApiService = ApexApiService()
+    private val apexApiService = ApexApiService.instance
 
     override suspend fun setup() {
-        publicSlashCommand(::SlapSlashArgs) { // Public slash commands have public responses
+        publicSlashCommand(::PlayerStatsArgs) { // Public slash commands have public responses
             name = "stats"
             description = "Retrieve Apex stats for a player"
 
@@ -46,7 +46,7 @@ class ApexPlayerStats : Extension() {
                         } else "$rankAndDivision :clap:! *tryhard...*"
                         embed {
                             title = ":joystick: ${stats.name}'s Apex Legends stats"
-                            description = "$rankUpMessage"
+                            description = rankUpMessage
                             url = "$PROFILE_URL/${arguments.platform}/${stats.uid}"
                             thumbnail {
                                 url = rank.rankImg.replace("\\", "")
@@ -81,13 +81,13 @@ class ApexPlayerStats : Extension() {
         }
     }
 
-    inner class SlapSlashArgs : Arguments() {
+    inner class PlayerStatsArgs : Arguments() {
         val player by string {
             name = "player"
             description = "Apex username of player"
         }
 
-        val platform by stringChoice {
+        val platform by defaultingStringChoice {
             name = "platform"
             description = "platform the player is on"
 
@@ -96,6 +96,7 @@ class ApexPlayerStats : Extension() {
                 "Xbox" to "Xbox",
                 "Playstation" to "Playstation"
             )
+            defaultValue = "PC"
         }
     }
 }

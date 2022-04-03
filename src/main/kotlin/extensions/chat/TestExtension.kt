@@ -9,7 +9,7 @@ class TestExtension : Extension() {
 
     override suspend fun setup() {
         chatCommand {
-            name = "slap"
+            name = "mrvnTest"
             description = "Get slapped!"
 
             action {

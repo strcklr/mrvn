@@ -1,5 +1,7 @@
 package api.apex.models
 
+import api.apex.models.stats.PlayerRank
+
 data class Rank(val name: String, val value: Int)
 
 @Suppress("MagicNumber")
