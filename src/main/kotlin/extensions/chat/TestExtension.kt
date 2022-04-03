@@ -4,8 +4,7 @@ import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.chatCommand
 import com.kotlindiscord.kord.extensions.utils.respond
 
-
-class TestExtension: Extension() {
+class TestExtension : Extension() {
     override val name = "test"
 
     override suspend fun setup() {

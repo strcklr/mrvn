@@ -1,5 +1,6 @@
 package extensions.slash.apex
 
+import api.apex.models.MASTER
 import api.apex.models.findRank
 import api.apex.services.ApexApiService
 import com.kotlindiscord.kord.extensions.commands.Arguments
@@ -13,12 +14,12 @@ import dev.kord.rest.builder.message.create.embed
 
 private const val PROFILE_URL = "https://apexlegendsstatus.com/profile/uid"
 
-class ApexPlayerStats: Extension() {
+class ApexPlayerStats : Extension() {
     override val name = "stats"
     private val apexApiService = ApexApiService()
 
     override suspend fun setup() {
-        publicSlashCommand(::SlapSlashArgs) {  // Public slash commands have public responses
+        publicSlashCommand(::SlapSlashArgs) { // Public slash commands have public responses
             name = "stats"
             description = "Retrieve Apex stats for a player"
 
@@ -31,12 +32,12 @@ class ApexPlayerStats: Extension() {
                         val calculatedRank = rank.findRank()
                         var rpToNextLevel = calculatedRank.getRPNeededForLevelUp(rank.rankScore)
                         var rankAndDivision = "${rank.rankName} ${rank.rankDiv}"
-                        if (rank.rankScore >= 10000) {
+                        if (rank.rankScore >= MASTER.value) {
                             rankAndDivision = rank.rankName
                             rpToNextLevel = 0
                         }
-                        val rankUpMessage = if(rpToNextLevel > 0)  {
-                            when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
+                        val rankUpMessage = if (rpToNextLevel > 0) {
+                            when (calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
                                 in 0 until 150 -> "So close!! :dash:"
                                 in 150 until 400 -> "Getting there!"
                                 in 400 until 1000 -> "Long ways to go..."
@@ -79,7 +80,6 @@ class ApexPlayerStats: Extension() {
             }
         }
     }
-
 
     inner class SlapSlashArgs : Arguments() {
         val player by string {

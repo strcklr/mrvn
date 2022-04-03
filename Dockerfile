@@ -24,7 +24,7 @@ COPY --chown=gradle:gradle src $APP_HOME/src
 #
 # Build the application.
 #
-RUN gradle --no-daemon build -x detekt
+RUN gradle --no-daemon build
 
 #
 # Java image for the application to run in.
