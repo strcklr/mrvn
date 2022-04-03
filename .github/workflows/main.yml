@@ -17,3 +17,11 @@ jobs:
           heroku_app_name: "mrvn-discord-bot"
           heroku_email: "strickler.16@gmail.com"
           usedocker: true
+          docker_build_args: |
+            MRVN_TOKEN
+            APEX_API_KEY
+            TEST_SERVER
+        env:
+          MRVN_TOKEN: ${{secrets.MRVN_TOKEN}}
+          APEX_API_KEY: ${{secrets.APEX_API_KEY}}
+          TEST_SERVER: ${{secrets.TEST_SERVER}}

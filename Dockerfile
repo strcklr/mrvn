@@ -35,6 +35,13 @@ FROM openjdk:12-alpine
 # Copy the jar file in and name it app.jar.
 #
 ARG BUILD_HOME
+ARG MRVN_TOKEN
+ARG APEX_API_KEY
+ARG TEST_SERVER
+
+ENV MRVN_TOKEN=$MRVN_TOKEN
+ENV APEX_API_KEY=$APEX_API_KEY
+ENV TEST_SERVER=$TEST_SERVER
 ENV APP_HOME=$BUILD_HOME
 COPY --from=build-image $APP_HOME/build/libs/mrvn*-all.jar app.jar
 

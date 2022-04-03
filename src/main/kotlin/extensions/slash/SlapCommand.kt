@@ -1,13 +1,11 @@
 package extensions.slash
 
-import TEST_SERVER_ID
 import com.kotlindiscord.kord.extensions.commands.Arguments
 import com.kotlindiscord.kord.extensions.commands.converters.impl.defaultingString
 import com.kotlindiscord.kord.extensions.commands.converters.impl.user
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
 import com.kotlindiscord.kord.extensions.types.respond
-import dev.kord.core.entity.interaction.PublicFollowupMessage
 
 class SlapCommand: Extension() {
     override val name = "slap"
