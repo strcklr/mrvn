@@ -36,17 +36,16 @@ class ApexPlayerStats: Extension() {
                             rpToNextLevel = 0
                         }
                         val rankUpMessage = if(rpToNextLevel > 0)  {
-                            val quip = when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
-                                in 0 until 150 -> "So close!!"
+                            when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
+                                in 0 until 150 -> "So close!! :dash:"
                                 in 150 until 400 -> "Getting there!"
                                 in 400 until 1000 -> "Long ways to go..."
                                 else -> "You're never gonna get there!"
                             }
-                            " (${rpToNextLevel} RP needed for ${calculatedRank.nextRank.name})! $quip"
-                        } else " :clap:! *tryhard*..."
+                        } else "$rankAndDivision :clap:! *tryhard*..."
                         embed {
                             title = ":joystick: ${stats.name}'s Apex Legends stats"
-                            description = "$rankAndDivision with ${rank.rankScore} RP$rankUpMessage"
+                            description = "$rankUpMessage"
                             url = "$PROFILE_URL/${arguments.platform}/${stats.uid}"
                             thumbnail {
                                 url = rank.rankImg.replace("\\", "")
