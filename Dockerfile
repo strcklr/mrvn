@@ -48,4 +48,4 @@ COPY --from=build-image $APP_HOME/build/libs/mrvn*-all.jar app.jar
 #
 # The command to run when the container starts.
 #
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT ["java -jar app.jar"]
