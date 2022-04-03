@@ -30,6 +30,7 @@ class ApexPlayerStats: Extension() {
                     if (stats != null && rank != null) {
                         val calculatedRank = rank.findRank()
                         val rpToNextLevel = calculatedRank.getRPNeededForLevelUp(rank.rankScore)
+                        val rankAndDivision = if (rank.rankScore >= 10000) "${rank.rankName}" else "${rank.rankName} ${rank.rankDiv}"
                         val rankUpMessage = if(rpToNextLevel > 0)  {
                             val quip = when(calculatedRank.getRPNeededForLevelUp(rank.rankScore)) {
                                 in 0 until 150 -> "So close!!"
@@ -38,12 +39,11 @@ class ApexPlayerStats: Extension() {
                                 else -> "You're never gonna get there!"
                             }
                             " (${rpToNextLevel} RP needed for ${calculatedRank.nextRank.name})! $quip"
-                        } else "Nice!"
+                        } else "*tryhard*"
                         embed {
-                            title = "${stats.name}'s Apex Legends stats"
-                            description = "${rank.rankName} ${rank.rankDiv} with ${rank.rankScore} RP$rankUpMessage"
+                            title = ":joystick: ${stats.name}'s Apex Legends stats"
+                            description = ":mechanical_arm: $rankAndDivision with ${rank.rankScore} RP$rankUpMessage"
                             url = "$PROFILE_URL/${arguments.platform}/${stats.uid}"
-                            println(rank.rankImg.replace("\\", ""))
                             thumbnail {
                                 url = rank.rankImg.replace("\\", "")
                             }
@@ -51,7 +51,7 @@ class ApexPlayerStats: Extension() {
                                 EmbedBuilder.Field().apply {
                                     inline = true
                                     name = ":medal: Rank"
-                                    value = "${rank.rankName} ${rank.rankDiv}"
+                                    value = rankAndDivision
                                 },
                                 EmbedBuilder.Field().apply {
                                     inline = true
