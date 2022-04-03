@@ -8,12 +8,12 @@ There are a ton of useful Herkou commands outlined in the docs https://devcenter
 
 ### Push app
 ```bash
-heroku container:push web --app mrvn-discord-bot
+heroku container:push worker --app mrvn-discord-bot
 ```
 
 ### Release app after push
 ```bash
-heroku container:push web --app mrvn-discord-bot
+heroku container:push worker --app mrvn-discord-bot
 ```
 
 ### Set environment variable
